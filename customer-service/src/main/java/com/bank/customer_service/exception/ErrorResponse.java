@@ -8,6 +8,13 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
+/*
+ * DTO pour la réponse d'erreur
+ * paramètres:
+ * - timestamp: date et heure de l'erreur
+ * - status: code de statut de l'erreur
+ * - error: message d'erreur
+ */
 public class ErrorResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
