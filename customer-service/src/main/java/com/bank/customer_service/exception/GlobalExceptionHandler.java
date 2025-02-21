@@ -12,14 +12,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
+/*
+ * Gestionnaire global des exceptions
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
+    /*
+     * Logger pour les exceptions
+     */
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    /*
+     * Exception pour le client non trouvé
+     */
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleCustomerNotFoundException(
             CustomerNotFoundException ex, WebRequest request) {
@@ -34,6 +41,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    /*
+     * Exception pour le client déjà existant
+     */
     @ExceptionHandler(CustomerAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleCustomerAlreadyExistsException(
             CustomerAlreadyExistsException ex, WebRequest request) {
@@ -48,24 +58,30 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    /*
+     * Exception pour les exceptions de validation
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(
             MethodArgumentNotValidException ex, WebRequest request) {
         logger.error("Validation exception: ", ex);
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                errors.put(error.getField(), error.getDefaultMessage()));
+        String errorMessage = ex.getBindingResult().getFieldErrors().isEmpty() ? 
+                "Validation failed" : 
+                ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
         
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                .message("Validation failed: " + errors)
+                .message("Validation failed: " + errorMessage)
                 .path(request.getDescription(false))
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /*
+     * Exception pour les exceptions de violation de contrainte
+     */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolationException(
             ConstraintViolationException ex, WebRequest request) {
@@ -80,6 +96,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /*
+     * Exception pour les exceptions de violation de contrainte
+     */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(
             DataIntegrityViolationException ex, WebRequest request) {
@@ -94,6 +113,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    /*
+     * Exception pour les exceptions non prévues
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllUncaughtException(
             Exception ex, WebRequest request) {

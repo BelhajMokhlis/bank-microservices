@@ -8,6 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+/*
+ * Entité pour le client
+ * paramètres:  
+ * - id: identifiant du client
+ * - name: nom du client
+ * - email: email du client
+ * - address: adresse du client
+ */
 @Data
 @Entity
 @Table(name = "clients")
