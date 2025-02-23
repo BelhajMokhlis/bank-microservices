@@ -14,7 +14,6 @@ import com.bank.account_service.dto.response.AccountResponse;
 import com.bank.account_service.exception.AccountAlreadyExistsException;
 import com.bank.account_service.exception.AccountNotFoundException;
 import com.bank.account_service.exception.AccountServiceException;
-import com.bank.account_service.exception.ErrorResponse;
 import com.bank.account_service.exception.InvalidAccountTypeException;
 import com.bank.account_service.mapper.AccountMapper;
 import com.bank.account_service.model.Entity.Account;
@@ -29,7 +28,11 @@ public class AccountServiceImpl implements AccountService {
     private AccountMapper accountMapper;
 
 
-
+/*
+ * create account
+ * @param : AccountRequest request
+ * @return : AccountResponse
+ */
     @Override
     public AccountResponse createAccount(AccountRequest request) {
         if (!request.getType().equals("COURANT") && !request.getType().equals("EPARGNE")) {
@@ -65,12 +68,21 @@ public class AccountServiceImpl implements AccountService {
         return accountMapper.toResponse(account);
     }
 
+    /*
+     * get all accounts
+     * @return : List<AccountResponse>
+     */
     @Override
     public List<AccountResponse> getAllAccounts() {
         List<Account> accounts = accountRepository.findAll();
         return accounts.stream().map(accountMapper::toResponse).collect(Collectors.toList());
     }
 
+    /*
+     * get account by id
+     * @param : Long id
+     * @return : AccountResponse
+     */
     @Override
     public AccountResponse getAccountById(Long id) {
         Account account = accountRepository.findById(id)
@@ -79,12 +91,22 @@ public class AccountServiceImpl implements AccountService {
     }
   
 
+    /*
+     * get accounts by client id
+     * @param : Long clientId
+     * @return : List<AccountResponse>
+     */
     @Override
     public List<AccountResponse> getAccountsByClientId(Long clientId) {
         List<Account> accounts = accountRepository.findByClientId(clientId);
         return accounts.stream().map(accountMapper::toResponse).collect(Collectors.toList());
     }
 
+    /*
+     * delete account
+     * @param : Long id of the account to delete
+     * @return : boolean
+     */
     @Override
     public boolean deleteAccount(Long id) {
         if (!accountRepository.existsById(id)) {

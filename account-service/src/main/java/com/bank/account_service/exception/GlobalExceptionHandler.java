@@ -15,10 +15,16 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * Gestionnaire global des exceptions
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    /*
+     * Exception pour les exceptions de validation
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(
             MethodArgumentNotValidException ex, WebRequest request) {
@@ -37,6 +43,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /*
+     * Exception pour les exceptions de violation de contrainte
+     */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolationException(
             ConstraintViolationException ex, WebRequest request) {
@@ -51,6 +60,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /*
+     * Exception pour les exceptions de violation de contrainte
+     */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(
             DataIntegrityViolationException ex, WebRequest request) {
@@ -65,6 +77,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    /*
+     * Exception pour les exceptions de compte non trouvé
+     */
     @ExceptionHandler(AccountNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleAccountNotFoundException(
             AccountNotFoundException ex, WebRequest request) {
@@ -79,6 +94,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
+    /*
+     * Exception pour les exceptions de compte déjà existant
+     */
     @ExceptionHandler(AccountAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleAccountAlreadyExistsException(
             AccountAlreadyExistsException ex, WebRequest request) {
@@ -93,6 +111,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
+    /*
+     * Exception pour les exceptions de service de compte
+     */
     @ExceptionHandler(AccountServiceException.class)
     public ResponseEntity<ErrorResponse> handleAccountServiceException(
             AccountServiceException ex, WebRequest request) {
@@ -107,6 +128,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
+    /*
+     * Exception pour les exceptions de type de compte invalide
+     */
     @ExceptionHandler(InvalidAccountTypeException.class)
     public ResponseEntity<ErrorResponse> handleInvalidAccountTypeException(
             InvalidAccountTypeException ex, WebRequest request) {
@@ -121,6 +145,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /*
+     * Exception pour les exceptions non capturées
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllUncaughtException(
             Exception ex, WebRequest request) {
