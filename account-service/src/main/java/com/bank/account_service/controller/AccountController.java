@@ -2,7 +2,9 @@ package com.bank.account_service.controller;
 
 import java.util.List;
 
+import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("/api/accounts")
 @OpenAPIDefinition(info = @Info(title = "Account Service API", version = "1.0", description = "API pour la gestion des comptes"))
 public class AccountController {
     @Autowired
@@ -69,10 +71,19 @@ public class AccountController {
     @ApiResponse(responseCode = "200", description = "Compte supprimé avec succès")
     @ApiResponse(responseCode = "404", description = "Compte non trouvé")
     @DeleteMapping("/{id}")
-    public boolean deleteAccount(@PathVariable Long id) {
-        return accountService.deleteAccount(id);
+    public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
+       accountService.deleteAccount(id);
+       return ResponseEntity.status(HttpStatus.SC_NO_CONTENT).body("Account deleted successfully");
     }
-    
+
+    @Operation(summary = "Supprimer tous les comptes d'un client par son ID", description = "Supprime tous les comptes d'un client par son ID")
+    @ApiResponse(responseCode = "200", description = "Comptes supprimés avec succès")
+    @ApiResponse(responseCode = "404", description = "Aucun compte trouvé")
+    @DeleteMapping("/delete-by-client-id/{clientId}")
+    public ResponseEntity<String> deleteAccountByClientId(@PathVariable Long clientId) {
+        accountService.deleteAccountByClientId(clientId);
+        return ResponseEntity.status(HttpStatus.SC_NO_CONTENT).body("Accounts deleted successfully");
+    }
 
     
 }

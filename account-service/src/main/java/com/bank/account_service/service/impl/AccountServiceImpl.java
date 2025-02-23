@@ -52,9 +52,9 @@ public class AccountServiceImpl implements AccountService {
         
         
         // Verify client existence
+        System.out.println("request.getClientId() : " + request.getClientId());
         RestTemplate restTemplate = new RestTemplate();
-        String clientUrl = "http://localhost:8081/customers/" + request.getClientId();
-        
+        String clientUrl = "http://localhost:8080/customer-service/api/customers/" + request.getClientId();
         try {
             restTemplate.getForEntity(clientUrl, String.class);
         } catch (HttpClientErrorException.NotFound e) {
@@ -99,6 +99,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountResponse> getAccountsByClientId(Long clientId) {
         List<Account> accounts = accountRepository.findByClientId(clientId);
+        if(accounts.isEmpty()){
+            throw new AccountNotFoundException("No accounts found for client id: " + clientId);
+        }
         return accounts.stream().map(accountMapper::toResponse).collect(Collectors.toList());
     }
 
@@ -114,6 +117,21 @@ public class AccountServiceImpl implements AccountService {
         }   
         accountRepository.deleteById(id);
         return true;
-    }   
+    } 
+    
+    /*
+     * delete all accounts by client id
+     * @param : Long clientId
+     * @return : boolean
+     */
+    @Override
+    public boolean deleteAccountByClientId(Long clientId) {
+        List<Account> accounts = accountRepository.findByClientId(clientId);
+        if(accounts.isEmpty()){
+            return true;
+        }
+        accountRepository.deleteAll(accounts);
+        return true;
+    }
 
 }

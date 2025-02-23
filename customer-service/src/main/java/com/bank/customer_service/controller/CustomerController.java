@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("api/customers")
 @OpenAPIDefinition(info = @Info(title = "Customer Service API", version = "1.0", description = "API pour la gestion des clients"))
 public class CustomerController {
     @Autowired
@@ -64,8 +64,9 @@ public class CustomerController {
     @Operation(summary = "Supprimer un client par son ID", description = "Supprime un client par son ID")
     @ApiResponse(responseCode = "200", description = "Client supprimé avec succès")
     @ApiResponse(responseCode = "404", description = "Client non trouvé")
-    public void deleteCustomer(@PathVariable Long id) {
+    public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Customer deleted successfully");
     }
 
 }

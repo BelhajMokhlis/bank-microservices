@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.bank.customer_service.dto.request.CustomerRequest;
 import com.bank.customer_service.dto.response.CustomerResponse;
@@ -71,6 +72,12 @@ public class CustomerServiceImpl implements CustomerService {
         if (!customerRepository.existsById(id)) {
             throw new CustomerNotFoundException("Customer not found with id: " + id);
         }
-        customerRepository.deleteById(id);
+        // delete all accounts of the client by using rest template
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/account-service/api/accounts/delete-by-client-id/" + id;
+        
+            restTemplate.delete(url);
+            customerRepository.deleteById(id);
+       
     }
 }
