@@ -11,7 +11,7 @@ import com.bank.account_service.model.Entity.Account;
  * Mapper pour le compte
  */ 
 @Mapper(componentModel = "spring")
-public interface CustomerMapper {
+public interface AccountMapper {
     /*
      * Convertit une entité en DTO
      * @param account
@@ -25,6 +25,9 @@ public interface CustomerMapper {
      * @return Account
      */
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "type", source = "type")
     Account toEntity(AccountRequest request);
+
+  
 
 }

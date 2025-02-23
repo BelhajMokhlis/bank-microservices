@@ -4,10 +4,13 @@ import com.bank.account_service.model.enums.AccountType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /*      
@@ -27,7 +30,9 @@ public class Account {
     private Long id;
     @Column(name = "solde", nullable = false)
     private Double solde;
+    @NotNull(message = "Le type de compte est requis.")
     @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
     private AccountType type;
     @Column(name = "clientId", nullable = false)
     private Long clientId;
