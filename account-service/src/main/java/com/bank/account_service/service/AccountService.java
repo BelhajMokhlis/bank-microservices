@@ -41,4 +41,12 @@ public interface AccountService {
      * @return boolean
      */
     boolean deleteAccount(Long id);
+
+    /*
+     * Supprime tous les comptes d'un client
+     * @param clientId
+     * @return boolean
+     */
+    boolean deleteAccountByClientId(Long clientId);
+
 }   
