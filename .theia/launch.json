@@ -1,0 +1,48 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "AccountServiceApplication",
+      "request": "launch",
+      "mainClass": "com.bank.account_service.AccountServiceApplication",
+      "projectName": "account-service"
+    },
+    {
+      "type": "java",
+      "name": "ConfigServiceApplication",
+      "request": "launch",
+      "mainClass": "com.bank.config_service.ConfigServiceApplication",
+      "projectName": "config-service"
+    },
+    {
+      "type": "java",
+      "name": "CustomerServiceApplication",
+      "request": "launch",
+      "mainClass": "com.bank.customer_service.CustomerServiceApplication",
+      "projectName": "customer-service"
+    },
+    {
+      "type": "java",
+      "name": "DiscoveryServiceApplication",
+      "request": "launch",
+      "mainClass": "com.bank.discovery_service.DiscoveryServiceApplication",
+      "projectName": "discovery-service"
+    },
+    {
+      "type": "java",
+      "name": "GatewayServiceApplication",
+      "request": "launch",
+      "mainClass": "com.bank.gateway_service.GatewayServiceApplication",
+      "projectName": "gateway-service"
+    }
+  ]
+}
